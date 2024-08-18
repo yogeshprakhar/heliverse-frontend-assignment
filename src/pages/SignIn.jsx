@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-// import { signin } from '../api-client'
+import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 const SignIn = () => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -15,7 +16,15 @@ const SignIn = () => {
         "Content-Type": 'application/json'
       },
       body: JSON.stringify(formData)
-    }).then((data) => { console.log(data.ok) }).catch((err) => console.log(err))
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Error while sign in ")
+      }
+      if (response.ok) {
+        navigate("/dashboard")
+      }
+
+    }).catch((err) => console.log(err))
   }
 
   return (
