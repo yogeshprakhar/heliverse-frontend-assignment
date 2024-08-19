@@ -5,17 +5,20 @@ import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const Dashboard = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     // fetching curentuser
     const fetchingCurrentUser = async () => {
       await fetch(`${API_BASE_URL}/api/user/getCurrentUser`, {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
         credentials: "include",
       })
         .then((response) => {
           if (!response.ok) {
-            navigate("/")
+            navigate("/");
           }
           return response.json();
         })
@@ -26,6 +29,9 @@ const Dashboard = () => {
     const fetchingAllUser = async () => {
       await fetch(`${API_BASE_URL}/api/user/alluser`, {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
         credentials: "include",
       })
         .then((response) => {
@@ -56,7 +62,7 @@ const Dashboard = () => {
   const [currentUser, setCurrentUser] = useState();
   // console.log("all student data", allStudent)
   // console.log("all teacher data", allTeacher)
-  console.log(allStudent)
+  console.log(allStudent);
   return (
     <div>
       <Header
@@ -69,14 +75,26 @@ const Dashboard = () => {
           <div className="border w-full">
             <h1 className="text-center font-bold text-xl mt-2">Teacher</h1>
             {allTeacher?.map((data) => (
-              <List name={data?.name} email={data?.email} isPrincipal={currentUser?.isPrincipal} role={currentUser?.role} id={data?._id} />
+              <List
+                name={data?.name}
+                email={data?.email}
+                isPrincipal={currentUser?.isPrincipal}
+                role={currentUser?.role}
+                id={data?._id}
+              />
             ))}
           </div>
         ) : null}
         <div className="border w-full">
           <h1 className="text-center font-bold text-xl mt-2">Student</h1>
           {allStudent?.map((data) => (
-            <List name={data?.name} email={data?.email} isPrincipal={currentUser?.isPrincipal} role={currentUser?.role} id={data?._id} />
+            <List
+              name={data?.name}
+              email={data?.email}
+              isPrincipal={currentUser?.isPrincipal}
+              role={currentUser?.role}
+              id={data?._id}
+            />
           ))}
         </div>
       </div>
